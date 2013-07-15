@@ -6,6 +6,8 @@ use Winter\Foundation\Container\Exception\ServiceNotDefined;
 use Winter\Foundation\Config\Exception\EnvVariableNotFound;
 use Winter\Foundation\Container\Exception\ReservedContextName;
 use Winter\Foundation\Container\Exception\InvalidArgumentFormat;
+use Winter\Foundation\Container\Exception\InvalidSetterMethod;
+use Winter\Foundation\Container\Exception\SetterMethodNotFound;
 use Winter\Foundation\Config\Config;
 use Winter\Foundation\Container\Validator\ConfigValidator;
 
@@ -44,7 +46,10 @@ final class Container {
         $this->services = array();
         $this->loadContainerConfig();
         foreach ($this->containerConfig->services as $service) {
-            $this->register($service->class, $service->name, $service->context, $service->arguments);
+            if (!isset($service->calls)) {
+                $service->calls = null;
+            }
+            $this->register($service->class, $service->name, $service->context, $service->arguments, $service->calls);
         }
     }
 
@@ -93,13 +98,14 @@ final class Container {
      * @param type $serviceClassName
      * @param type $serviceGlobalName
      */
-    public function register($serviceClassName, $serviceGlobalName, $serviceContexts, $arguments) {
+    public function register($serviceClassName, $serviceGlobalName, $serviceContexts, $arguments, $calls) {
+
 
         if (!isset($this->services[self::DEFAULT_CONTEXT]) || !is_array($this->services[self::DEFAULT_CONTEXT])) {
             $this->services[self::DEFAULT_CONTEXT] = array();
         }
         //register the service in the default context
-        $this->services[self::DEFAULT_CONTEXT][$serviceGlobalName] = $this->newInstance($serviceClassName, $arguments);
+        $this->services[self::DEFAULT_CONTEXT][$serviceGlobalName] = $this->newInstance($serviceClassName, $arguments, $calls);
 
         //register the service in all declared contexts
         if (is_array($serviceContexts) && sizeof($serviceContexts) > 0) {
@@ -114,40 +120,81 @@ final class Container {
                     $this->services[$context] = array();
                 }
 
-                $this->services[$context][$serviceGlobalName] = $this->newInstance($serviceClassName, $arguments);
+                $this->services[$context][$serviceGlobalName] = $this->newInstance($serviceClassName, $arguments, $calls);
             }
         }
     }
 
     /**
-     * create a new class instance injecting dependencies
+     * Build an array of arguments from json argument definition
      * 
-     * @param string $className class of the new instance
-     * @param array $arguments contains string in format servicename@context
+     * @param array $arguments
+     * @return array
+     * @throws InvalidArgumentFormat
      */
-    private function newInstance($className, $arguments) {
+    private function buildArgumentInstances($arguments) {
 
-        $argumentInstances = array();
         $validator = new ConfigValidator();
-        
+        $argumentInstances = array();
+
         foreach ($arguments as $arg) {
-            
+
             //validate tha argument
             if (!$validator->validateArgument($arg)) {
                 throw new InvalidArgumentFormat("Invalid dependency injection argument {$arg}");
             }
-            
-            //split arguments in servicename ad context
+
+            //split arguments in servicename ad context            
             $explodedArgs = explode("@", $arg);
             $serviceArgName = (!empty($explodedArgs[0])) ? $explodedArgs[0] : null;
             $serviceArgContext = (!empty($serviceArgContext[1])) ? $explodedArgs[1] : 'default';
-            
             $argumentInstances[] = $this->getService($serviceArgName, $serviceArgContext);
         }
+        return $argumentInstances;
+    }
+
+    /**
+     * Create a new class instance injecting dependencies
+     * 
+     * @param string $className class of the new instance
+     * @param array $arguments contains string in format servicename@context
+     */
+    private function newInstance($className, $arguments, $calls) {
+
+        $argumentInstances = $this->buildArgumentInstances($arguments);
 
         //create and return a new instance of a service
         $reflectedClass = new \ReflectionClass($className);
-        return $reflectedClass->newInstanceArgs($argumentInstances);
+        $injectable = $reflectedClass->newInstanceArgs($argumentInstances);
+
+        //if true, we have also setter injection
+        if ($calls != null) {
+
+            //validate calls structure
+            foreach ($calls as $call) {
+
+                //check if setter method is provided
+                if (empty($call->method)) {
+                    throw new SetterMethodNotFound();
+                }
+
+                //arguments taken from call definition
+                $callArguments = empty($call->arguments) ? array() : $call->arguments;
+
+                //arguments for the setter method
+                $setterArguments = $this->buildArgumentInstances($callArguments);
+
+                //check if setter method exists
+                if (!method_exists($injectable, $call->method)) {
+                    throw new InvalidSetterMethod();
+                }
+
+                //call the setter
+                call_user_func_array(array($injectable, $call->method), $setterArguments);
+            }
+        }
+
+        return $injectable;
     }
 
     /**
@@ -188,5 +235,4 @@ final class Container {
             }
         }
     }
-
 }

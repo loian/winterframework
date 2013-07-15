@@ -1,16 +1,22 @@
 {
-    "services":[
+    "services": [
         {
-            "class":"\\Application\\Test\\TestService",
-            "name":"testservice",
-            "context" : [],
-            "arguments" : []
+            "class": "\\Application\\Test\\TestService",
+            "name": "testservice",
+            "context": [],
+            "arguments": []
         },
         {
-            "class":"\\Application\\Test\\TestService2",
-            "name":"testservice2",
-            "context" : [],
-            "arguments" : ["testservice"]
-        }        
+            "class": "\\Application\\Test\\TestService2",
+            "name": "testservice2",
+            "context": [],
+            "arguments": ["testservice@namespace"],
+            "calls": [
+                {
+                    "method": "setterTest",
+                    "arguments": ["testservice@namespace"]
+                }
+            ]
+        }
     ]
 }

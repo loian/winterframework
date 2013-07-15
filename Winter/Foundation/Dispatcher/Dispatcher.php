@@ -10,13 +10,13 @@ use Winter\Foundation\Dispatcher\Exception\ConditionMethodInvalid;
 use Winter\Foundation\Dispatcher\Exception\ConditionNotFound;
 use Winter\Foundation\Dispatcher\Exception\ExecuteMethodNotFoundInListener;
 use Winter\Foundation\Config\Config;
+
 /**
  * System event dispatcher
  *
  * @author Lorenzo Iannone
  */
 final class Dispatcher {
-
 
     const CONDITION_MATCH = 'match';
     const CONDITION_EXECUTE = 'execute';
@@ -96,8 +96,14 @@ final class Dispatcher {
         $this->listeners[$eventClassName][] = $listenerClassName;
     }
 
-    public function unregister(ListenerInterface $listener) {
-        
+    public function unregister($listenerClassName) {
+        foreach ($this->listeners[$eventClassName] as $regEvent => $regListenersList) {
+            foreach ($regListenersList as $listenerKey => $regListener) {
+                if ($regListener == $listenerClassName) {
+                    unset($this->listeners[$regEvent][$listenerKey]);
+                }
+            }
+        }
     }
 
     /**
@@ -112,7 +118,6 @@ final class Dispatcher {
                 if ($this->checkCondition($executor, $event)) {
                     $executor->execute($event);
                 }
-                
             }
         }
     }
@@ -141,7 +146,7 @@ final class Dispatcher {
                             return true;
                         }
                         break;
-                        
+
                     case self::CONDITION_EXECUTE:
                         $methodName = $classDescription->tags['condition'][0];
 
@@ -150,14 +155,14 @@ final class Dispatcher {
                         if (!method_exists($listener, $methodName)) {
                             throw new ExecuteMethodNotFoundInListener();
                         }
-                        
-                        //invoke the method declared as execution condition
+
+                        //invoke the method declared as execution condition checker
                         //to check if execute has to be called
                         if ($listener->{$methodName}($event)) {
                             $listener->execute($event);
                         }
                         break;
-                        
+
                     default:
                         throw new ConditionMethodInvalid();
                         break;
@@ -171,10 +176,11 @@ final class Dispatcher {
             if (!empty($classDescription->tags['conditionmethod'])) {
                 throw new ConditionNotFound();
             }
-            
+
             //here doesn't exist condition and conditionmethod
             //so we have to execute the listener
             $listener->execute($event);
         }
     }
+
 }

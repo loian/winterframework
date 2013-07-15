@@ -19,8 +19,12 @@ class TestService2 {
     }
     
     public function test() {
-        echo '<br/>questo e` un pregiato esempio di dependency injection<br/>';
+        echo '<br/>questo e` un pregiato esempio di dependency injection xx<br/>';
         echo $this->x->testMethod();
+    }
+    
+    public function setterTest($var) {
+        
     }
 }
 

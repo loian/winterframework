@@ -25,12 +25,12 @@ class HttpListener extends AbstractListener {
         $gatewayRequest = new RequestGatewayEvent();
         $this->dispatcherNotify($gatewayRequest);
         
-//        $test = Container::getInstance()->getService('testservice');
-//        $test->testMethod();
-//        
-//        
-//        $test2 = Container::getInstance()->getService('testservice2');
-//        $test2->test();
+        $test = Container::getInstance()->getService('testservice');
+        $test->testMethod();
+        
+        
+        $test2 = Container::getInstance()->getService('testservice2');
+        $test2->test();
         
     }
     
