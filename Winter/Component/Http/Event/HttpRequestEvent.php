@@ -3,14 +3,14 @@
 namespace Winter\Component\Http\Event;
 
 use Winter\Foundation\Event\AbstractEvent;
-use Winter\Component\Http\Request\Request;
+use Winter\Component\Http\Request\HttpRequest;
 
 /**
  * The http Request
  *
  * @author Lorenzo Iannone
  */
-class RequestEvent extends AbstractEvent {
+class HttpRequestEvent extends AbstractEvent {
 
     protected $request;
 
@@ -18,7 +18,7 @@ class RequestEvent extends AbstractEvent {
      * Default http request event constructor
      */
     public function __construct() {
-        $this->request = new Request();
+        $this->request = new HttpRequest();
         parent::__construct();
     }
 

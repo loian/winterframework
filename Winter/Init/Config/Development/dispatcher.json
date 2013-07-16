@@ -1,8 +1,8 @@
 {
     "listeners": [
         {
-            "class": "Winter\\Component\\Http\\Listener\\HttpListener",
-            "event": "Winter\\Component\\Http\\Event\\RequestEvent"
+            "class": "Application\\Listener\\TestListener",
+            "event": "Winter\\Component\\Http\\Event\\HttpRequestEvent"
         }
     ]
 }

@@ -9,7 +9,7 @@ use Winter\Component\Http\Parameters\Container\ParametersContainer;
  *
  * @author Lorenzo Iannone
  */
-class Request {
+class HttpRequest {
 
     /**
      * @var Winter\Component\Http\Parameters\Container\ParametersContainer;

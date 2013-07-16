@@ -2,11 +2,11 @@
 require_once __DIR__.'/../Foundation/Autoloader/Autoloader.php';
 
 use Winter\Foundation\Dispatcher\Dispatcher;
-use Winter\Component\Http\Event\RequestEvent;
+use Winter\Component\Http\Event\HttpRequestEvent;
 error_reporting (E_ALL);
 
 /* get http request event */
-$requestEvent = new RequestEvent();
+$requestEvent = new HttpRequestEvent();
 
 /* dispatch the request event */
 Dispatcher::getInstance()->notify($requestEvent);

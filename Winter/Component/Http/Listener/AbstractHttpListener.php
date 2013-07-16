@@ -1,8 +1,8 @@
 <?php
-namespace Winter\Component\Gateway\Listener;
+namespace Winter\Component\Http\Listener;
 
 use Winter\Foundation\Listener\AbstractListener;
-use Winter\Component\Http\Request\Request;
+use Winter\Component\Http\Request\HttpRequest;
 
 /**
  * AbstractGatewayListener 
@@ -10,7 +10,7 @@ use Winter\Component\Http\Request\Request;
  *
  * @author lorenzo
  */
-abstract class AbstractGatewayListener extends AbstractListener {
+abstract class AbstractHttpListener extends AbstractListener {
     
     /**
      * @var \Winter\Component\Http\Request\Request 
@@ -21,16 +21,16 @@ abstract class AbstractGatewayListener extends AbstractListener {
      * Default Abstract Gateway Listener
      */
     public function __construct() {
-        $this->request = new Request();
+        $this->request = new HttpRequest();
     }
     
     /**
      * Build an url from an httpRequest
      * 
-     * @param \Winter\Component\Http\Request\Request $request | null
+     * @param \Winter\Component\Http\Request\HttpRequest $request | null
      * @return string
      */
-    public function generateUrlFromRequest(Request $request = null) {
+    public function generateUrlFromRequest(HttpRequest $request = null) {
         return 'this is an url';
     }    
 }
