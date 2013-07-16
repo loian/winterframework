@@ -20,7 +20,7 @@ class TestListener extends AbstractHttpListener {
     public function execute(\Winter\Foundation\Event\Interfaces\EventInterface $event) {
         echo 'bacche';
         
-        $session = new Session(new \Winter\Component\Http\Session\Handler\PhpSessionHandler());
+        $session = new Session(new \Winter\Component\Http\Session\SessionHandler\PhpSessionHandler());
         $session->start();
         //$session->set('bac','che');
         echo $session->get('bac');

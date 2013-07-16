@@ -75,7 +75,7 @@ class Session implements SessionInterface{
     }
 
     public function remove($key) {
-        unset ($_SESSION($key));
+        unset ($_SESSION[$key]);
     }
 
     public function set($key, $value) {

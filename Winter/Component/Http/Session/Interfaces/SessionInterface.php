@@ -27,7 +27,7 @@ interface SessionInterface {
     /**
      * Set the session id
      */
-    public function setId();
+    public function setId($id);
     
     /**
      * Regenerate session id
