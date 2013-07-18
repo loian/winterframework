@@ -24,6 +24,9 @@ class TestListener extends AbstractHttpListener {
         $session->start();
         //$session->set('bac','che');
         echo $session->get('bac');
+        
+        $x = \Winter\Foundation\Container\Container::getInstance()->getService("testservice");
+        $x->testMethod();
     }  
 }
 

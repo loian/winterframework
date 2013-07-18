@@ -1,16 +1,16 @@
 <?php
 
-namespace Winter\Foundation\Container\Exception;
+namespace Winter\Foundation\Config\Exception;
 
 /**
- * Description of EnvConfigNotFoundException
- *
  * @author Lorenzo Iannone
  */
-class InvalidSetterMethod extends \RuntimeException {
+class ConfigNotWritable extends \RuntimeException {
 
     public function __construct($message = null, \Exception $previous = null, $code = 0) {
+
         parent::__construct($message, $code, $previous);
     }
 
 }
+

@@ -1,0 +1,4 @@
+## YAML Template.
+listeners: 
+  - class : "Application\\Listener\\TestListener"
+    event : "Winter\\Component\\Http\\Event\\HttpRequestEvent"

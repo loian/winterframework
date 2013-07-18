@@ -2,7 +2,6 @@
 namespace Winter\Foundation\Config\Handler;
 
 use Winter\Foundation\Config\Handler\AbstractConfigHandler;
-use Winter\Foundation\Config\Handler\Exception\FileNotFound;
 use Winter\Foundation\Config\Handler\Exception\ParseError;
 
 /**
@@ -12,21 +11,20 @@ use Winter\Foundation\Config\Handler\Exception\ParseError;
  */
 class JsonConfigHandler extends AbstractConfigHandler {
  
-    public function read($filePath) {
-        if(!file_exists($filePath)) {
-            throw new FileNotFound("{$filePath} not found.");
+    public function decode($encodedText) {
+        $config = json_decode($encodedText);
+        if ($config == null) {
+            throw new ParseError();
         }
-        
-        $conf = json_decode(file_get_contents($filePath));
-        
-        if ($conf==null) {
+        return $config;
+    }
+
+    public function encode($decodedObject) {
+        $encodedConfig = json_encode($decodedObject, JSON_PRETTY_PRINT);
+        if(!$encodedConfig) {
             throw new ParseError();
         }
         
-        return $conf;
+        return $encodedConfig; 
     }
-
-    public function write($config, $filePath) {
-        
-    }    
 }

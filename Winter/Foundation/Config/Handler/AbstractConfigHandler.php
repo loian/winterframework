@@ -2,6 +2,7 @@
 namespace Winter\Foundation\Config\Handler;
 
 use Winter\Foundation\Config\Handler\Interfaces\ConfigHandlerInterface;
+use Winter\Foundation\Config\Handler\Exception\FileNotFound;
 
 /**
  * Base class of all config handlers
@@ -9,19 +10,28 @@ use Winter\Foundation\Config\Handler\Interfaces\ConfigHandlerInterface;
  * @author Lorenzo Iannone
  */
 abstract class AbstractConfigHandler implements ConfigHandlerInterface {
-    
-    abstract public function read($filePath);
 
-    abstract public function write($config, $filePath);
-    
     /**
-     * Check if path of config file exists
+     * Read a configuration from file
      * @param string $filePath
-     * @return boolean
+     * @return array|object
+     * @throws FileNotFound
      */
-    protected  function checkPath($filePath) {
-        return true;
+    public function read($filePath) {
+        if(!file_exists($filePath)) {
+            throw new FileNotFound("{$filePath} not found.");
+        }
+        
+        return $this->decode(file_get_contents($filePath));
     }
-}
 
-?>
+    /**
+     * Write a configuration to a file
+     * @param object $config
+     * @param string $filePath
+     */
+    public function write($config, $filePath) {
+        
+    }
+    
+}

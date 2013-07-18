@@ -46,9 +46,9 @@ final class Container {
         $this->services = array();
         $this->loadContainerConfig();
         foreach ($this->containerConfig->services as $service) {
-            if (!isset($service->calls)) {
-                $service->calls = null;
-            }
+            $service->calls = isset($service->calls) ? $service->calls : null;
+            $service->context = isset($service->context) ? $service->context : self::DEFAULT_CONTEXT;
+            $service->arguments = (isset($service->arguments) && is_array($service->arguments)) ? $service->arguments : array();
             $this->register($service->class, $service->name, $service->context, $service->arguments, $service->calls);
         }
     }
@@ -83,13 +83,10 @@ final class Container {
         }
 
         /* check if config file exists */
-        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/container.json';
+        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/container.' . Config::getConfigFormat();
 
-        if (!file_exists($path)) {
-            throw new EnvConfigNotFound();
-        }
-
-        $this->containerConfig = json_decode(file_get_contents($path));
+        $configManager = new Config();
+        $this->containerConfig = $configManager->loadConfig($path);
     }
 
     /**
@@ -100,10 +97,6 @@ final class Container {
      */
     public function register($serviceClassName, $serviceGlobalName, $serviceContexts, $arguments, $calls) {
 
-
-        if (!isset($this->services[self::DEFAULT_CONTEXT]) || !is_array($this->services[self::DEFAULT_CONTEXT])) {
-            $this->services[self::DEFAULT_CONTEXT] = array();
-        }
         //register the service in the default context
         $this->services[self::DEFAULT_CONTEXT][$serviceGlobalName] = $this->newInstance($serviceClassName, $arguments, $calls);
 

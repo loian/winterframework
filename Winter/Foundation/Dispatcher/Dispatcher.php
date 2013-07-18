@@ -5,11 +5,13 @@ namespace Winter\Foundation\Dispatcher;
 use Winter\Foundation\Event\Interfaces\EventInterface;
 use Winter\Foundation\Listener\Interfaces\ListenerInterface;
 use Winter\Foundation\Config\Exception\EnvVariableNotFound;
-use Winter\Foundation\Dispatcher\Exception\EnvConfigNotFound;
 use Winter\Foundation\Dispatcher\Exception\ConditionMethodInvalid;
 use Winter\Foundation\Dispatcher\Exception\ConditionNotFound;
 use Winter\Foundation\Dispatcher\Exception\ExecuteMethodNotFoundInListener;
 use Winter\Foundation\Config\Config;
+use Winter\Foundation\Config\Handler\JsonConfigHandler;
+use Winter\Foundation\Config\Handler\YamlConfigHandler;
+
 
 /**
  * System event dispatcher
@@ -32,14 +34,23 @@ final class Dispatcher {
      * @var StdClass
      */
     private $componentConfig;
+    
+    
+    /**
+     * All registeren listeners
+     * @var array
+     */
+    private $listeners;
 
     /**
      * Private constructor of the Dispacher;
      */
     private function __construct() {
         $this->loadDispatcherConfig();
-        foreach ($this->componentConfig->listeners as $listener) {
-            $this->register($listener->class, $listener->event);
+        if(!empty($this->componentConfig->listeners)) {
+            foreach ($this->componentConfig->listeners as $listener) {
+                $this->register($listener->class, $listener->event);
+            }
         }
     }
 
@@ -55,13 +66,10 @@ final class Dispatcher {
         }
 
         /* check if config file exists */
-        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/dispatcher.json';
+        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/dispatcher.' . Config::getConfigFormat();
 
-        if (!file_exists($path)) {
-            throw new EnvConfigNotFound();
-        }
-
-        $this->componentConfig = json_decode(file_get_contents($path));
+        $configManager = new Config();
+        $this->componentConfig = $configManager->loadConfig($path);
     }
 
     /**

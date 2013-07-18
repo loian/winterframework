@@ -1,0 +1,4 @@
+## YAML Template.
+services:
+  - class: "\\Application\\Test\\TestService"
+    name : "testservice"
