@@ -8,7 +8,7 @@ use Winter\Component\Http\Request\HttpRequest;
  * AbstractGatewayListener 
  * Raise events listened by application controllers
  *
- * @author lorenzo
+ * @author Lorenzo Iannone
  */
 abstract class AbstractHttpListener extends AbstractListener {
     

@@ -21,7 +21,10 @@ class HttpRequestEvent extends AbstractEvent {
         $this->request = new HttpRequest();
         parent::__construct();
     }
-
+    /**
+     * Generate http event id
+     * it is set to requested url
+     */
     protected function generateIdentifier() {
         $this->identifier = $this->request->getUrl();
     }
