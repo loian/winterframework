@@ -10,9 +10,9 @@ use Winter\Foundation\Config\Handler\JsonConfigHandler;
 use Winter\Foundation\Config\Handler\YamlConfigHandler;
 
 /**
- * Container of config costants
+ * System configuration manager
  *
- * @author lorenzo
+ * @author Lorenzo Iannone
  */
 class Config {
 
@@ -91,10 +91,18 @@ class Config {
     public function writeConfig($config, $filePath){
     }
     
+    /**
+     * Set the default config format
+     * @param string $configFormat
+     */
     public static function setConfigFormat($configFormat) {
         self::$configFormat = $configFormat;
     }
     
+    /**
+     * Get the default config format
+     * @return string
+     */
     public static function getConfigFormat() {
         if(self::$configFormat == null) {
             return self::JSON_CONFIG;
@@ -103,5 +111,3 @@ class Config {
         return self::$configFormat;
     }
 }
-
-?>
