@@ -25,12 +25,17 @@ class YamlConfigHandler extends AbstractConfigHandler {
             throw new ParseError();
         }
         
-        //convert to object passing by json 
+        //convert to object through by json 
         $config = json_decode(json_encode($config, JSON_FORCE_OBJECT));
         return $config;
     }
 
-    
+    /**
+     * Encode and object into a yaml straam
+     * @param stdClass $decodedObject
+     * @return string
+     * @throws ParseError
+     */
     public function encode($decodedObject) {
         $encodedConfig = yaml_emit((array)$decodedObject);
         
