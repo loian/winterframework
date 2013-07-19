@@ -66,7 +66,7 @@ final class Dispatcher {
         }
 
         /* check if config file exists */
-        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/dispatcher.' . Config::getConfigFormat();
+        $path = $_SERVER["DOCUMENT_ROOT"] . 'Init/Config/' . ucfirst($env) . '/dispatcher.' . Config::getConfigFormat();
 
         $configManager = new Config();
         $this->componentConfig = $configManager->loadConfig($path);

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../Foundation/Autoloader/Autoloader.php';
+require_once __DIR__.'/../../Winter/Foundation/Autoloader/Autoloader.php';
 use Winter\Foundation\Config\Config;
 use Winter\Foundation\Dispatcher\Dispatcher;
 use Winter\Component\Http\Event\HttpRequestEvent;

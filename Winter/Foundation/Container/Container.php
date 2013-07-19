@@ -83,7 +83,7 @@ final class Container {
         }
 
         /* check if config file exists */
-        $path = $_SERVER["DOCUMENT_ROOT"] . 'Winter/Init/Config/' . ucfirst($env) . '/container.' . Config::getConfigFormat();
+        $path = $_SERVER["DOCUMENT_ROOT"] . 'Init/Config/' . ucfirst($env) . '/container.' . Config::getConfigFormat();
 
         $configManager = new Config();
         $this->containerConfig = $configManager->loadConfig($path);
