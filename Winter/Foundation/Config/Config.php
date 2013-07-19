@@ -8,6 +8,7 @@ use Winter\Foundation\Config\Exception\ConfigNotReadable;
 use Winter\Foundation\Config\Handler\Exception\ParseError;
 use Winter\Foundation\Config\Handler\JsonConfigHandler;
 use Winter\Foundation\Config\Handler\YamlConfigHandler;
+use Winter\Foundation\Config\Exception\ConfigNotWritable;
 
 /**
  * System configuration manager
@@ -47,7 +48,7 @@ class Config {
      * Set a new config handler 
      * @param \Winter\Foundation\Config\Handler\Interfaces\ConfigHandlerInterface $configHandler
      */
-    protected function setConfigHandler(ConfigHandlerInterface $configHandler) {
+    public function setConfigHandler(ConfigHandlerInterface $configHandler) {
         $this->configHandler = $configHandler;
     }
     /**
@@ -89,6 +90,17 @@ class Config {
      * @param string $filePath
      */
     public function writeConfig($config, $filePath){
+        $configText = null;
+        try {
+            $configText = $this->configHandler->encode($config);
+        } catch (ParseError $ex) {
+            throw new ConfigNotWritable("Unable to encode content for {$filePath}.");
+        }
+        
+        if (!file_put_contents($filePath, $configText)) {
+            throw new ConfigNotWritable("Unable to write {$filePath}");
+        }
+        return true;
     }
     
     /**

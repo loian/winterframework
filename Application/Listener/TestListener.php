@@ -23,10 +23,15 @@ class TestListener extends AbstractHttpListener {
         $session = new Session(new \Winter\Component\Http\Session\SessionHandler\PhpSessionHandler());
         $session->start();
         //$session->set('bac','che');
-        echo $session->get('bac');
+        //echo $session->get('bac');
         
-        $x = \Winter\Foundation\Container\Container::getInstance()->getService("testservice");
-        $x->testMethod();
+        //$x = \Winter\Foundation\Container\Container::getInstance()->getService("testservice");
+        //$x->testMethod();
+        $config = new \Winter\Foundation\Config\Config();
+        $config->setConfigHandler(new \Winter\Foundation\Config\Handler\YamlConfigHandler());
+        $x = new \stdClass();
+        $x->y = array(1,3,4);
+        $config->writeConfig($x, "/home/lorenzo/test/x.yml");
     }  
 }
 

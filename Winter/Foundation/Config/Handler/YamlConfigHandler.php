@@ -30,7 +30,14 @@ class YamlConfigHandler extends AbstractConfigHandler {
         return $config;
     }
 
+    
     public function encode($decodedObject) {
+        $encodedConfig = yaml_emit((array)$decodedObject);
         
+        if(!$encodedConfig) {
+            throw new ParseError();
+        }
+        
+        return $encodedConfig;         
     }    
 }
