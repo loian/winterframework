@@ -9,6 +9,6 @@
 function __autoload($class) {
     $parts = explode('\\', $class);
     $fileName = implode('/', $parts) . '.php';
-    require $_SERVER["DOCUMENT_ROOT"] . '/../' . $fileName;
+    require __DIR__ . '/../../../' . $fileName;
 }
 
