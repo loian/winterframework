@@ -3,6 +3,7 @@
 namespace Winter\Component\Http\Session;
 
 use Winter\Component\Http\Session\Interfaces\SessionInterface;
+use Winter\Component\Http\Parameter\Exception\ParameterNotFoundException;
 
 /**
  * Wrapper class for php session
@@ -47,6 +48,9 @@ class Session implements SessionInterface{
     }
 
     public function get($key) {
+        if (!key_exists($key, $_SESSION)) {
+            throw new ParameterNotFoundException();
+        }
         return $_SESSION[$key];
     }
 

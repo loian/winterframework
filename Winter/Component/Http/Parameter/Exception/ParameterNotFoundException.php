@@ -1,6 +1,6 @@
 <?php
 
-namespace Winter\Component\Http\Parameters\Exception;
+namespace Winter\Component\Http\Parameter\Exception;
 
 /**
  * ParameterNotFoundException

@@ -1,15 +1,17 @@
 <?php
 
-namespace Winter\Component\Http\Parameters\Container;
+namespace Winter\Component\Http\Parameter;
 
-use Winter\Component\Http\Parameters\Exception\ParameterNotFoundException;
+use Winter\Component\Http\Parameter\Exception\ParameterNotFoundException;
+use Winter\Component\Http\Parameter\Interfaces\ParameterContainerInterface;
+
 
 /**
  * A container for _GET, _POST, COOKIE etc..
  *
  * @author Lorenzo Iannone
  */
-class ParametersContainer {
+class ParameterContainer implements ParameterContainerInterface {
 
     /**
      * @var array
@@ -44,5 +46,27 @@ class ParametersContainer {
         }
         return $this->parameters['key'];
     }
+
+    public function getAll() {
+        return $this->parameters;
+    }
+
+    public function getKeys() {
+        return array_keys($this->parameters);
+    }
+
+    public function hasKey($key) {
+        if(array_key_exists($key, $this->parameters)) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function remove($key) {
+        unset ($this->parameters[$key]);
+    }
+
+
 
 }
