@@ -79,6 +79,10 @@ class Session implements SessionInterface{
     }
 
     public function remove($key) {
+        if (!key_exists($key, $_SESSION[$key])) {
+            throw new ParameterNotFoundException();
+        }
+
         unset ($_SESSION[$key]);
     }
 

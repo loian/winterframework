@@ -47,14 +47,30 @@ class ParameterContainer implements ParameterContainerInterface {
         return $this->parameters['key'];
     }
 
+    /**
+     * Get all parameters
+     * 
+     * @return array
+     */
     public function getAll() {
         return $this->parameters;
     }
 
+    /**
+     * Get all paramter keys\
+     * 
+     * @return array
+     */
     public function getKeys() {
         return array_keys($this->parameters);
     }
 
+    /**
+     * Check if parameter has a given key
+     * 
+     * @param string $key
+     * @return boolean
+     */
     public function hasKey($key) {
         if(array_key_exists($key, $this->parameters)) {
             return true;
@@ -63,10 +79,16 @@ class ParameterContainer implements ParameterContainerInterface {
         return false;
     }
 
+    /**
+     * Remove parameter 
+     * 
+     * @param string $key
+     */
     public function remove($key) {
+        if (!key_exists($key, $this->parameters)) {
+            throw new ParameterNotFoundException();
+        }
         unset ($this->parameters[$key]);
     }
-
-
 
 }
