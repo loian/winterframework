@@ -22,8 +22,8 @@ class ParameterContainer implements ParameterContainerInterface {
      * * Default ParametersContainer constructor
      * @param array $params
      */
-    public function __construct($params) {
-        $this->parameters = $params;
+    public function __construct(&$params) {
+        $this->parameters = &$params;
     }
 
     /**
@@ -31,7 +31,7 @@ class ParameterContainer implements ParameterContainerInterface {
      * @param string $key
      */
     public function set($key, $value) {
-        $this->parameters['key'] = $value;
+        $this->parameters[$key] = $value;
     }
 
     /**

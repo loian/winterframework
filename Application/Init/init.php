@@ -14,3 +14,8 @@ Config::setConfigFormat(Config::YAML_CONFIG);
 /* dispatch the request event */
 Dispatcher::getInstance()->notify($requestEvent);
 
+
+
+//$s = new \Winter\Component\Http\Session\Session(new Winter\Component\Http\Session\SessionHandler\PhpSessionHandler());
+//$s->set('pippeox', 33333);
+//var_dump($_SESSION);

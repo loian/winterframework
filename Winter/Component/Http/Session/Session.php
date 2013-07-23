@@ -4,13 +4,14 @@ namespace Winter\Component\Http\Session;
 
 use Winter\Component\Http\Session\Interfaces\SessionInterface;
 use Winter\Component\Http\Parameter\Exception\ParameterNotFoundException;
+use Winter\Component\Http\Parameter\ParameterContainer;
 
 /**
  * Wrapper class for php session
  *
  * @author Lorenzo Iannone
  */
-class Session implements SessionInterface{
+class Session extends ParameterContainer implements SessionInterface{
     
     /** @var \SessionHandlerInterface  */
     protected $saveHandler;
@@ -39,55 +40,30 @@ class Session implements SessionInterface{
                 array($this->saveHandler, 'gc')
             );
         }
+        //start the session if necessary
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        //bint the internal param to $_SESSION;
+        parent::__construct($_SESSION);
 
     }
-    
     
     public function clear() {
-        $_SESSION = array();
-    }
-
-    public function get($key) {
-        if (!key_exists($key, $_SESSION)) {
-            throw new ParameterNotFoundException();
-        }
-        return $_SESSION[$key];
-    }
-
-    public function getAll() {
-        return $_SESSION;
+        $this->parameters = array();
     }
 
     public function getId() {
         return session_id();
     }
 
-    public function getKeys() {
-        return array_keys($_SESSION);
-    }
-
-    public function hasKey($key) {
-        return array_key_exists($key, $_SESSION);
-    }
-
     public function invalidate() {
-        unset ($_SESSION);
+        unset ($this->parameters);
     }
 
     public function regenerateId() {
         session_regenerate_id();
-    }
-
-    public function remove($key) {
-        if (!key_exists($key, $_SESSION[$key])) {
-            throw new ParameterNotFoundException();
-        }
-
-        unset ($_SESSION[$key]);
-    }
-
-    public function set($key, $value) {
-        $_SESSION[$key] = $value;
     }
 
     public function setId($id) {
@@ -96,5 +72,9 @@ class Session implements SessionInterface{
 
     public function start() {
         session_start();
+    }
+    
+    public function close() {
+        session_write_close();
     }
 }
