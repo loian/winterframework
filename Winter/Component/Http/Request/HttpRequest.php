@@ -3,6 +3,7 @@
 namespace Winter\Component\Http\Request;
 
 use Winter\Component\Http\Parameter\ParameterContainer;
+use Winter\Component\Http\Cookie\Cookie;
 
 /**
  * Http Request wrapper
@@ -30,9 +31,11 @@ class HttpRequest {
      * Default http Request constructor
      */
     public function __construct() {
+        $this->envParams = new ParameterContainer($_ENV);
         $this->getParams = new ParameterContainer($_GET);
         $this->postParams = new ParameterContainer($_POST);
         $this->serverParams = new ParameterContainer($_SERVER);
+        $this->cookie = new Cookie();
     }
 
     /**
