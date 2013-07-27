@@ -18,13 +18,8 @@ abstract class AbstractEvent implements EventInterface {
     protected $identifier;
 
     /**
-     * A key=>value array containg all arguments of the event
-     * @var array 
-     */
-    protected $arguments;
-
-    /**
      * Default event constructor
+     * 
      * @param array $arguments  A key=>value array containg all arguments of the event
      */
     public function __construct() {
@@ -46,4 +41,10 @@ abstract class AbstractEvent implements EventInterface {
         return $this->identifier;
     }
 
+    /**
+     * Get the content
+     * 
+     * @return mixed
+     */
+    abstract public function getContent();
 }
