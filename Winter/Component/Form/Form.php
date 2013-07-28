@@ -44,7 +44,7 @@ class Form implements FormInterface, IteratorInterface {
      * A list of all children
      * @var array
      */
-    protected $childForms;
+    protected $children;
 
     /**
      * Default form constructor
@@ -53,7 +53,7 @@ class Form implements FormInterface, IteratorInterface {
         $this->processableData = array();
         $this->postableData = array();
         $this->userData = array();
-        $this->childForms = array();
+        $this->children = array();
     }
 
     /**
@@ -61,8 +61,8 @@ class Form implements FormInterface, IteratorInterface {
      * @yeld FormInterface
      */
     public function iterate() {
-        foreach($this->childForms as $c) {
-            yield $c;
+        foreach($this->children as $c) {
+            //yield $c;
         }
     }
     
@@ -84,7 +84,7 @@ class Form implements FormInterface, IteratorInterface {
     }
 
     public function addChild(FormInterface $childForm) {
-        $this->childForms[] = $childForm;
+        $this->children[] = $childForm;
     }
 
 }
