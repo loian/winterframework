@@ -26,6 +26,7 @@ class Element implements ElementInterface {
      * @var string
      */
     protected $attributes;
+    
 
     /**
      * Default constructor
