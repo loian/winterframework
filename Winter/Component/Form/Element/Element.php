@@ -83,6 +83,8 @@ class Element implements ElementInterface {
      * @throws AttrbuteNotFoundException
      */
     public function getAttribute($key) {
+        var_dump($this->attributes);
+        
         if (!key_exists($key, $this->attributes)) {
             throw new AttrbuteNotFoundException();
         }

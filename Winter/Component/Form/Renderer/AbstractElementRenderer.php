@@ -22,7 +22,7 @@ abstract class AbstractElementRenderer implements RendererInterface {
      * 
      * @return string
      */
-    protected function buildAttributeString($attributes) {
+    public function buildAttributeString($attributes) {
         
         $tmp = array();
         foreach ($attributes as $attr => $value) {

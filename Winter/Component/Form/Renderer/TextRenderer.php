@@ -3,6 +3,7 @@
 namespace Winter\Component\Form\Renderer;
 
 use Winter\Component\Form\Renderer\AbstractElementRenderer;
+use Winter\Component\Form\Element\Interfaces\ElementInterface;
 
 /**
  * Description of TextRenderer
@@ -11,9 +12,9 @@ use Winter\Component\Form\Renderer\AbstractElementRenderer;
  */
 class TextRenderer extends AbstractElementRenderer {
 
-    public function render($text) {
-        $format = '<input type="%s" %s/>';
-        $rendered = sprintf($format, $text->getAttribute('type'), $this->buildAttributeString($text->getAttributes()));
+    public function render(ElementInterface $text) {
+        $format = '<input %s/>';
+        $rendered = sprintf($format, $this->buildAttributeString($text->getAttributes()));
         return $rendered;
     }
 
