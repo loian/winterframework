@@ -5,44 +5,29 @@ namespace Winter\Component\Form\Element;
 use Winter\Component\Form\Element\Element;
 use Winter\Component\Form\Element\Interfaces\ValidableInterface;
 use Winter\Component\Form\Validator\Interfaces\ValidatorInterface;
+use Winter\Foundation\Iterator\Interfaces\IteratorInterface;
 
 /**
- * Checkbox
+ * MultiCheckbox
  *
  * @author Lorenzo Iannone
  */
-class Checkbox extends Element implements ValidableInterface {
+class MultiCheckbox extends Element implements ValidableInterface,  IteratorInterface {
 
+    protected $attributes;
+    
     /**
-     * @var \Winter\Component\Form\Validator\Interfaces\ValidatorInterface[]
+     * @var \Winter\Component\Form\Element\Checkbox
      */
-    protected $validators;
-
-    /**
-     * The value of checked checkbox
-     * @var string
-     */
-    protected $checkedValue;
-
-    /**
-     * The value of unchecked checkbox
-     * @var string
-     */
-    protected $uncheckedValue;
-
-
-
+    protected $checkboxes;
+    
     public function __construct() {
         parent::__construct();
-
-        //set the type
-        $this->attributes['type'] = 'checkbox';
-
-        //set the default values
-        $this->checkedValue = "1";
-        $this->checkedValue = "0";
+        $this->attributes['type'] = 'checkbox';      
+        $this->checkboxes = array();
     }
-
+    
+    
     /**
      * Add a validator 
      * @param \Winter\Component\Form\Validator\Interfaces\ValidatorInterface $validator
@@ -66,20 +51,26 @@ class Checkbox extends Element implements ValidableInterface {
     /**
      * Set the checked value
      * @param string $value
-     * @return Winter\Component\Form\Element\Checkbox
+     * @return Winter\Component\Form\Element\MultiCheckbox
      */
     public function setCheckedValue($value) {
         $this->checkedValue = $value;
-        return $this;        
+        foreach($this->checkboxes as $check) {
+            $check->setCheckedValue($this->getCheckedValue());
+        }
+        return $this;
     }
 
     /**
      * Set the unchecked value
      * @param string $value
-     * @return Winter\Component\Form\Element\Checkbox
+     * @return Winter\Component\Form\Element\MultiCheckbox
      */
     public function setUncheckedValue($value) {
         $this->uncheckedValue = $value;
+        foreach($this->checkboxes as $check) {
+            $check->setUncheckedValue($this->getUncheckedValue());
+        }        
         return $this;
     }
 
@@ -98,31 +89,29 @@ class Checkbox extends Element implements ValidableInterface {
     public function getUncheckedValue() {
         return $this->uncheckedValue;
     }
+    
+    public function addCheck(Checkbox $check) {
 
-    /**
-     * Check the checkbox
-     */
-    public function check() {
-        $this->attributes['checked'] = $this->checkedValue;
+        $check->setCheckedValue($this->getCheckedValue());
+        $check->setUncheckedValue($this->getUncheckedValue());
+        
+        $this->checkboxes[] = $check;
+                
     }
 
-    /**
-     * Uncheck the checkbox
-     */
-    public function uncheck() {
-        $this->attributes['checked'] = $this->uncheckedValue;
-    }
-
-    /**
-     * Check if checked :)
-     * 
-     * @return boolean
-     */
-    public function isChecked() {
-        if (!empty($this->attributes['checked']) && $this->attributes['checked'] == $this->checkedValue) {
-            return true;
+    public function iterate() {
+        foreach($this->checkboxes as $check) {
+            //yield $check;
         }
-        return false;
     }
-
+    
+    public function getChecked() {
+        $result = array();
+        foreach($this->checkboxes as $check) {
+            $result[] = $check->isChecked();
+        }
+        return $result;
+    }
+    
 }
+
