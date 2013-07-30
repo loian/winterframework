@@ -150,7 +150,7 @@ final class Dispatcher {
                 switch ($classDescription->tags['conditionmethod'][0]) {
                     case self::CONDITION_MATCH:
                         //compare the @condition annotation to the event identifier
-                        if (preg_match('~' . $classDescription->tags['condition'][0] . '~', $event->getIdentifier())) {
+                        if (preg_match('~' . $classDescription->tags['condition'][0] . '$~', $event->getIdentifier())) {
                             return true;
                         }
                         break;
