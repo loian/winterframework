@@ -4,7 +4,6 @@ namespace Winter\Component\Http\Cookie;
 
 use Winter\Component\Http\Parameter\ParameterContainer;
 use Winter\Component\Http\Parameter\Interfaces\ParameterContainerInterface;
-use Winter\Component\Http\Parameter\ParameterContainer;
 
 /**
  * Cookie

@@ -71,7 +71,9 @@ class Session extends ParameterContainer implements SessionInterface{
     }
 
     public function start() {
-        session_start();
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            session_start();
+        }
     }
     
     public function close() {
