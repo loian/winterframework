@@ -7,7 +7,7 @@ namespace Winter\Component\Form\Element\Exception;
  *
  * @author Lorenzo Iannone
  */
-class AttrbuteNotFoundException extends \RuntimeException {
+class TypeOverride extends \RuntimeException {
 
     public function __construct($message = null, \Exception $previous = null, $code = 0) {
 

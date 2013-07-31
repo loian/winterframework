@@ -6,7 +6,7 @@ use Winter\Component\Form\Element\Element;
 use Winter\Component\Form\Element\Interfaces\ValidableInterface;
 use Winter\Component\Form\Validator\Interfaces\ValidatorInterface;
 use Winter\Component\Form\Renderer\Interfaces\RenderableInterface;
-use Winter\Component\Form\Renderer\Interfaces\RenderInterface;
+use Winter\Component\Form\Renderer\Interfaces\RendererInterface;
 use Winter\Component\Form\Renderer\TextRenderer;
 
 /**
@@ -23,7 +23,7 @@ class Text extends Element implements ValidableInterface, RenderableInterface {
     
     /**
      * The element renderer
-     * @var  Winter\Component\Form\Renderer\Interfaces\RenderInterface
+     * @var  Winter\Component\Form\Renderer\Interfaces\RendererInterface
      */
     protected $renderer;
 
@@ -33,8 +33,6 @@ class Text extends Element implements ValidableInterface, RenderableInterface {
     public function __construct() {
         parent::__construct();
         $this->validators = array();
-        $this->attributes['type'] = 'text';
-        
         //set the default renderer
         $this->renderer = new TextRenderer();
     }
@@ -79,7 +77,7 @@ class Text extends Element implements ValidableInterface, RenderableInterface {
 
     /**
      * Return the renderer
-     * @return Winter\Component\Form\Renderer\Interfaces\RenderInterface
+     * @return Winter\Component\Form\Renderer\Interfaces\RendererInterface
      */
     public function getRender() {
         return $this->rendered;
@@ -95,10 +93,10 @@ class Text extends Element implements ValidableInterface, RenderableInterface {
 
     /**
      * Set the renderer
-     * @param \Winter\Component\Form\Renderer\Interfaces\RenderInterface $renderer
+     * @param \Winter\Component\Form\Renderer\Interfaces\RendererInterface $renderer
      * @return \Winter\Component\Form\Element\Text
      */
-    public function setRenderer(RenderInterface $renderer) {
+    public function setRenderer(RendererInterface $renderer) {
         $this->renderer = $renderer;
         return $this;
     }

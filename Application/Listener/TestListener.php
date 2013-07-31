@@ -14,7 +14,7 @@ class TestListener extends AbstractHttpListener {
 
     /**
      * @condition test
-     * @conditionmethod match  
+     * @conditionmethod match
      * @param \Winter\Foundation\Event\Interfaces\EventInterface $event
      */
     public function execute(\Winter\Foundation\Event\Interfaces\EventInterface $event) {
@@ -22,6 +22,7 @@ class TestListener extends AbstractHttpListener {
         
         $session = new Session(new \Winter\Component\Http\Session\SessionHandler\PhpSessionHandler());
         $session->start();
+        $cookie = new \Winter\Component\Http\Cookie\Cookie;
         //$session->set('bac','che');
         //echo $session->get('bac');
         
@@ -33,10 +34,20 @@ class TestListener extends AbstractHttpListener {
 //        $x->y = array(1,3,4);
 //        $config->writeConfig($x, "/home/lorenzo/test/x.yml");
         
-        $t = new \Winter\Component\Form\Element\Text();
-       
-        $t->setAttribute('name','testo')->setAttribute("id", "34443");
+        $t = new \Winter\Component\Form\Element\TextArea();
+        
+        $t->setAttribute('name', 'testo')
+                ->setAttribute("id", "34443")
+                ->setValue(4444444444444444);
         echo $t->render();
     }  
+    
+    public function testEx() {
+        if (rand(1,2) == 1)
+        return false;
+        else
+        return true;
+                
+    }
 }
 

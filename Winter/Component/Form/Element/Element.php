@@ -3,7 +3,8 @@
 namespace Winter\Component\Form\Element;
 
 use Winter\Component\Form\Element\Interfaces\ElementInterface;
-use Winter\Component\Form\Element\Exception\AttrbuteNotFoundException;
+use Winter\Component\Form\Element\Exception\AttrbuteNotFound;
+use Winter\Component\Form\Element\Exception\TypeOverride;
 
 /**
  * Element
@@ -59,8 +60,12 @@ class Element implements ElementInterface {
      * @param string $key
      * @param mixed $value
      * @return \Winter\Component\Form\Element\Element
+     * @throws TypeOverride
      */
     public function setAttribute($key, $value) {
+         if(strtolower($key) == 'type') {
+             throw new TypeOverride();
+         }
         $this->attributes[$key] = $value;
         return $this;
     }
@@ -69,8 +74,13 @@ class Element implements ElementInterface {
      * Set one or more attributes
      * @param array $attributes
      * @return \Winter\Component\Form\Element\Element
+     * @throws TypeOverride
      */
     public function setAttributes($attributes) {
+        if($this->chechTypeOverride()) {
+            throw new TypeOverride();
+        }
+        
         $this->attributes = $attributes;
         return $this;
     }
@@ -80,13 +90,11 @@ class Element implements ElementInterface {
      * 
      * @param string $key
      * @return \Winter\Component\Form\Element\Element
-     * @throws AttrbuteNotFoundException
+     * @throws AttrbuteNotFound
      */
     public function getAttribute($key) {
-        var_dump($this->attributes);
-        
         if (!key_exists($key, $this->attributes)) {
-            throw new AttrbuteNotFoundException();
+            throw new AttrbuteNotFound();
         }
 
         return $this->attributes[$key];
@@ -103,11 +111,11 @@ class Element implements ElementInterface {
      * Remove an attribute
      * @param string $key
      * @return \Winter\Component\Form\Element\Element
-     * @throws AttrbuteNotFoundException
+     * @throws AttrbuteNotFound
      */
     public function removeAttribute($key) {
         if (!key_exists($key, $this->attributes)) {
-            throw new AttrbuteNotFoundException();
+            throw new AttrbuteNotFound();
         }
 
         unset($this->attributes[$key]);
@@ -140,5 +148,15 @@ class Element implements ElementInterface {
     public function getLabel() {
         return $this->label;
     }
+    
+    public function chechTypeOverride() {
+        foreach($this->attributes as $k=>$v) {
+            if(strtolower($k) == 'type') {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 
 }
