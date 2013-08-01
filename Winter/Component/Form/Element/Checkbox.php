@@ -5,13 +5,15 @@ namespace Winter\Component\Form\Element;
 use Winter\Component\Form\Element\Element;
 use Winter\Component\Form\Element\Interfaces\ValidableInterface;
 use Winter\Component\Form\Validator\Interfaces\ValidatorInterface;
-
+use Winter\Component\Form\Renderer\Interfaces\RenderableInterface;
+use Winter\Component\Form\Renderer\Interfaces\RendererInterface;
+use Winter\Component\Form\Renderer\CheckboxRenderer;
 /**
  * Checkbox
  *
  * @author Lorenzo Iannone
  */
-class Checkbox extends Element implements ValidableInterface {
+class Checkbox extends Element implements ValidableInterface, RenderableInterface {
 
     /**
      * @var \Winter\Component\Form\Validator\Interfaces\ValidatorInterface[]
@@ -30,17 +32,20 @@ class Checkbox extends Element implements ValidableInterface {
      */
     protected $uncheckedValue;
 
-
+    /**
+     * The element renderer
+     * @var  Winter\Component\Form\Renderer\Interfaces\RendererInterface
+     */
+    protected $renderer;
 
     public function __construct() {
         parent::__construct();
 
-        //set the type
-        $this->attributes['type'] = 'checkbox';
-
         //set the default values
         $this->checkedValue = "1";
         $this->checkedValue = "0";
+        
+        $this->setRenderer(new CheckboxRenderer);
     }
 
     /**
@@ -123,6 +128,41 @@ class Checkbox extends Element implements ValidableInterface {
             return true;
         }
         return false;
+    }
+
+    public function getValue() {
+        if($this->isChecked()) {
+            return $this->getCheckedValue();
+        }
+        
+        return null;
+        
+    }
+
+    /**
+     * Return the renderer
+     * @return Winter\Component\Form\Renderer\Interfaces\RendererInterface
+     */
+    public function getRender() {
+        return $this->rendered;
+    }
+
+    /**
+     * Render the element
+     * @return string
+     */
+    public function render() {
+        return $this->renderer->render($this);
+    }
+
+    /**
+     * Set the renderer
+     * @param \Winter\Component\Form\Renderer\Interfaces\RendererInterface $renderer
+     * @return \Winter\Component\Form\Element\Text
+     */
+    public function setRenderer(RendererInterface $renderer) {
+        $this->renderer = $renderer;
+        return $this;
     }
 
 }

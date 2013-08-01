@@ -11,7 +11,7 @@ use Winter\Component\Form\Element\Exception\TypeOverride;
  *
  * @author Lorenzo Iannone
  */
-class Element implements ElementInterface {
+abstract class Element implements ElementInterface {
 
     /**
      * @var string
@@ -157,6 +157,8 @@ class Element implements ElementInterface {
         }
         return false;
     }
+    
+    abstract public function getValue();
     
 
 }

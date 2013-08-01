@@ -23,7 +23,6 @@ class MultiCheckbox extends Element implements ValidableInterface,  IteratorInte
     
     public function __construct() {
         parent::__construct();
-        $this->attributes['type'] = 'checkbox';      
         $this->checkboxes = array();
     }
     
@@ -47,54 +46,9 @@ class MultiCheckbox extends Element implements ValidableInterface,  IteratorInte
         $this->validators = $validators;
         return $this;
     }
-
-    /**
-     * Set the checked value
-     * @param string $value
-     * @return Winter\Component\Form\Element\MultiCheckbox
-     */
-    public function setCheckedValue($value) {
-        $this->checkedValue = $value;
-        foreach($this->checkboxes as $check) {
-            $check->setCheckedValue($this->getCheckedValue());
-        }
-        return $this;
-    }
-
-    /**
-     * Set the unchecked value
-     * @param string $value
-     * @return Winter\Component\Form\Element\MultiCheckbox
-     */
-    public function setUncheckedValue($value) {
-        $this->uncheckedValue = $value;
-        foreach($this->checkboxes as $check) {
-            $check->setUncheckedValue($this->getUncheckedValue());
-        }        
-        return $this;
-    }
-
-    /**
-     * Get the checked value
-     * @return string 
-     */
-    public function getCheckedValue() {
-        return $this->checkedValue;
-    }
-
-    /**
-     * Get the unchecked value
-     * @return string 
-     */
-    public function getUncheckedValue() {
-        return $this->uncheckedValue;
-    }
     
     public function addCheck(Checkbox $check) {
-
-        $check->setCheckedValue($this->getCheckedValue());
-        $check->setUncheckedValue($this->getUncheckedValue());
-        
+        $check->setName($this->attributes['name'].'[]');
         $this->checkboxes[] = $check;
                 
     }
@@ -113,5 +67,57 @@ class MultiCheckbox extends Element implements ValidableInterface,  IteratorInte
         return $result;
     }
     
+    public function getValue() {
+        $val = array();
+        foreach($this->checkboxes as $check) {
+            if($check->isChecked()) {
+                $val[] = $check->getValue();
+            }
+        }
+        return $val;
+    }
+
+    /**
+     * Set one attribute
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return \Winter\Component\Form\Element\Element
+     * @throws TypeOverride
+     */
+    public function setAttribute($key, $value) {
+         if(strtolower($key) == 'type') {
+             throw new TypeOverride();
+         }
+
+         if(strtolower($key) == 'name') {
+             foreach($this->checkboxes as $check) {
+                 $check->setAttribute($key, $value.'[]');
+             }
+         }        
+         
+        $this->attributes[$key] = $value;        
+        return $this;
+    }    
+    
+    /**
+     * Set one or more attributes
+     * @param array $attributes
+     * @return \Winter\Component\Form\Element\Element
+     * @throws TypeOverride
+     */
+    public function setAttributes($attributes) {
+        if($this->chechTypeOverride()) {
+            throw new TypeOverride();
+        }
+        
+        $this->attributes = $attributes;
+        
+        foreach($this->checkboxes as $check) {
+            $check->setAttribute('name', $this->attributes['name'].'[]');
+        }
+        
+        return $this;
+    }    
 }
 

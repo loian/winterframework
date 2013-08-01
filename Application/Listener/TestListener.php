@@ -34,11 +34,11 @@ class TestListener extends AbstractHttpListener {
 //        $x->y = array(1,3,4);
 //        $config->writeConfig($x, "/home/lorenzo/test/x.yml");
         
-        $t = new \Winter\Component\Form\Element\TextArea();
+        $t = new \Winter\Component\Form\Element\Checkbox();
         
         $t->setAttribute('name', 'testo')
-                ->setAttribute("id", "34443")
-                ->setValue(4444444444444444);
+                ->setAttribute("id", "34443")->setCheckedValue('OOKK');
+                
         echo $t->render();
     }  
     

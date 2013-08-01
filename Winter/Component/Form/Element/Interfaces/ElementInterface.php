@@ -69,4 +69,9 @@ interface ElementInterface {
      * Get the label
      */
     public function getLabel();
+    
+    /**
+     * Get the value
+     */
+    public function getValue();
 }

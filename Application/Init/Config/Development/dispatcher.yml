@@ -2,3 +2,5 @@
 listeners: 
   - class : "Application\\Listener\\TestListener"
     event : "Winter\\Component\\Http\\Event\\HttpRequestEvent"
+  - class : "Application\\Listener\\TestListener2"
+    event : "Winter\\Component\\Http\\Event\\HttpRequestEvent"

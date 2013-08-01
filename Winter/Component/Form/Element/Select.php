@@ -72,5 +72,19 @@ class Select extends Element implements ValidableInterface, IteratorInterface {
             //yield $option;
         }
     }
+    
+    public function getValue() {
+        foreach ($this->options as $option) {
+            if ($option->isSelected()) {
+                return $option->getValue();
+            }
+        }
+        
+        if(count($this->options) > 0) {
+            return $this->options->getValue();
+        }
+        
+        return null;
+    }
 
 }
