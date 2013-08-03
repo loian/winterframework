@@ -4,8 +4,8 @@ namespace Winter\Foundation\Listener;
 use Winter\Foundation\Listener\Interfaces\ListenerInterface;
 use Winter\Foundation\BlockParser\BlockParser;
 use Winter\Foundation\Listener\Exceptions\ConditionNotFound;
-use Winter\Foundation\Listener\Exceptions\ConditionMethodNotFound;
-use Winter\Foundation\Listener\Exceptions\ConditionMethodInvalid;
+use Winter\Foundation\Listener\Exceptions\ConditionStrategyNotFound;
+use Winter\Foundation\Listener\Exceptions\ConditionStrategyInvalid;
 use Winter\Foundation\Dispatcher\Dispatcher;
 
 

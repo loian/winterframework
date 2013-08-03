@@ -5,7 +5,7 @@ namespace Winter\Foundation\Dispatcher;
 use Winter\Foundation\Event\Interfaces\EventInterface;
 use Winter\Foundation\Listener\Interfaces\ListenerInterface;
 use Winter\Foundation\Config\Exception\EnvVariableNotFound;
-use Winter\Foundation\Dispatcher\Exception\ConditionMethodInvalid;
+use Winter\Foundation\Dispatcher\Exception\ConditionStrategyInvalid;
 use Winter\Foundation\Dispatcher\Exception\ConditionNotFound;
 use Winter\Foundation\Dispatcher\Exception\ExecuteMethodNotFoundInListener;
 use Winter\Foundation\Config\Config;
@@ -134,7 +134,7 @@ final class Dispatcher {
      * Check if a condition to execute the listener is reached
      * 
      * @param \Winter\Foundation\Event\Interfaces\EventInterface $event
-     * @throws ConditionMethodNotFound
+     * @throws ConditionStrategyNotFound
      * @throws ConditionNotFound
      * @return boolean
      */
@@ -144,10 +144,10 @@ final class Dispatcher {
 
         //check if a condition tag exists
         if (!empty($classDescription->tags['condition'][0])) {
-            //if it exists, must exists also the @conditionmethod
-            if (!empty($classDescription->tags['conditionmethod'][0])) {
+            //if it exists, must exists also the @conditionstrategy
+            if (!empty($classDescription->tags['conditionstrategy'][0])) {
 
-                switch ($classDescription->tags['conditionmethod'][0]) {
+                switch ($classDescription->tags['conditionstrategy'][0]) {
                     case self::CONDITION_MATCH:
                         //compare the @condition annotation to the event identifier
                         if (preg_match('~' . $classDescription->tags['condition'][0] . '$~', $event->getIdentifier())) {
@@ -172,20 +172,20 @@ final class Dispatcher {
                         break;
 
                     default:
-                        throw new ConditionMethodInvalid();
+                        throw new ConditionStrategyInvalid();
                         break;
                 }
             } else {
-                //@conditionmethod not found
-                throw new ConditionMethodNotFound();
+                //@conditionstrategy not found
+                throw new ConditionStrategyNotFound();
             }
         } else {
-            //if exists only @conditionmethod
-            if (!empty($classDescription->tags['conditionmethod'])) {
+            //if exists only @conditionstrategy
+            if (!empty($classDescription->tags['conditionstrategy'])) {
                 throw new ConditionNotFound();
             }
 
-            //here doesn't exist condition and conditionmethod
+            //here doesn't exist condition and conditionstrategy
             //so we have to execute the listener
             $listener->execute($event);
         }

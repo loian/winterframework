@@ -13,8 +13,8 @@ use Winter\Component\Http\Session\Session;
 class TestListener2 extends AbstractHttpListener {
 
     /**
-     * @condition test
-     * @conditionmethod match
+     * @condition testEx
+     * @conditionstrategy execute
      * @param \Winter\Foundation\Event\Interfaces\EventInterface $event
      */
     public function execute(\Winter\Foundation\Event\Interfaces\EventInterface $event) {

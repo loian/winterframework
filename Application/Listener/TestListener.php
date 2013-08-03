@@ -14,11 +14,10 @@ class TestListener extends AbstractHttpListener {
 
     /**
      * @condition test
-     * @conditionmethod match
+     * @conditionstrategy match
      * @param \Winter\Foundation\Event\Interfaces\EventInterface $event
      */
     public function execute(\Winter\Foundation\Event\Interfaces\EventInterface $event) {
-        echo 'bacche';
         
         $session = new Session(new \Winter\Component\Http\Session\SessionHandler\PhpSessionHandler());
         $session->start();
@@ -33,11 +32,11 @@ class TestListener extends AbstractHttpListener {
 //        $x = new \stdClass();
 //        $x->y = array(1,3,4);
 //        $config->writeConfig($x, "/home/lorenzo/test/x.yml");
-        
-        $t = new \Winter\Component\Form\Element\Checkbox();
+        $t = new \Winter\Component\Form\Element\Select();
+        $t->setOption(new \Winter\Component\Form\Element\SelectOption(33, "test"));
         
         $t->setAttribute('name', 'testo')
-                ->setAttribute("id", "34443")->setCheckedValue('OOKK')
+                ->setAttribute("id", "a34443")
                 ->setLabel('elemento:');
                 
         echo $t->render();
