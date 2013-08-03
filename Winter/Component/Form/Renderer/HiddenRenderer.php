@@ -19,7 +19,7 @@ class HiddenRendererRenderer extends AbstractElementRenderer implements Renderer
      * @return string
      */
     protected function getRenderedElement(ElementInterface $text) {
-        $format = '<input type="hidden" %s/>';
+        $format = "<input type=\"hidden\" %s/>\n";
         $rendered = sprintf($format, $this->buildAttributeString($text->getAttributes()));
         return $rendered;
     }

@@ -19,7 +19,7 @@ class PasswordRenderer extends AbstractElementRenderer implements RendererInterf
      * @return string
      */
     protected function getRenderedElement(ElementInterface $text) {
-        $format = '<input type="password" %s/>';
+        $format = "<input type=\"password\" %s/>\n";
         $rendered = sprintf($format, $this->buildAttributeString($text->getAttributes()));
         return $rendered;
     }

@@ -19,7 +19,7 @@ class TextRenderer extends AbstractElementRenderer implements RendererInterface 
      * @return string
      */
     protected function getRenderedElement(ElementInterface $text) {
-        $format = '<input type="text" %s/>';
+        $format = "<input type=\"text\" %s/>\n";
         $rendered = sprintf($format, $this->buildAttributeString($text->getAttributes()));
         return $rendered;
     }

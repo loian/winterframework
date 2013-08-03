@@ -19,7 +19,7 @@ class TextAreaRenderer extends AbstractElementRenderer implements RendererInterf
      * @return string
      */    
     protected function getRenderedElement(ElementInterface $textarea) {
-        $format = '<textarea %s>%s</textarea>';
+        $format = "<textarea %s>%s</textarea>\n";
         $rendered = sprintf($format, $this->buildAttributeString($textarea->getAttributes()),$textarea->getValue());
         return $rendered;
     }

@@ -25,7 +25,7 @@ class CheckboxRenderer extends AbstractElementRenderer implements RendererInterf
             $checkedString = sprintf('checked="%s"',$checkbox->getValue());
         }
         
-        $format = '<input type="checkbox" %s %s/>';
+        $format = "<input type=\"checkbox\" %s %s/>\n";
         $rendered = sprintf($format, $this->buildAttributeString($checkbox->getAttributes()), $checkedString);
         return $rendered;
     }

@@ -61,7 +61,7 @@ abstract class AbstractElementRenderer implements RendererInterface {
      * @return string
      */
     protected function getRenderedLabel(ElementInterface $element) {
-        $format = '<label for="%s">%s</label>';
+        $format = "<label for=\"%s\">%s</label>\n";
         
         try {
            $id = $element->getAttribute('id');
