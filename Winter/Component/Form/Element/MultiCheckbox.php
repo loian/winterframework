@@ -76,6 +76,10 @@ class MultiCheckbox extends Element implements ValidableInterface,  IteratorInte
         }
         return $val;
     }
+    
+    public function getChecboxes() {
+        return $this->checkboxes;
+    }
 
     /**
      * Set one attribute
