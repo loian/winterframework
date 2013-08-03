@@ -7,13 +7,16 @@ use Winter\Component\Form\Element\Interfaces\ValidableInterface;
 use Winter\Component\Form\Validator\Interfaces\ValidatorInterface;
 use Winter\Component\Form\Element\SelectOption;
 use Winter\Foundation\Iterator\Interfaces\IteratorInterface;
+use Winter\Component\Form\Renderer\Interfaces\RenderableInterface;
+use Winter\Component\Form\Renderer\Interfaces\RendererInterface;
+use Winter\Component\Form\Renderer\SelectRenderer;
 
 /**
  * Select
  *
  * @author Lorenzo Iannone
  */
-class Select extends Element implements ValidableInterface, IteratorInterface {
+class Select extends Element implements RenderableInterface, ValidableInterface, IteratorInterface {
 
     /**
      * Options of select
@@ -23,7 +26,7 @@ class Select extends Element implements ValidableInterface, IteratorInterface {
 
     public function __construct() {
         parent::__construct();
-        $this->attributes['type'] = 'select';
+        $this->setRenderer(new SelectRenderer());
     }
 
     /**
@@ -57,6 +60,14 @@ class Select extends Element implements ValidableInterface, IteratorInterface {
     }
 
     /**
+     * Get array of selectOptions
+     * @return \Winter\Component\Form\Element\SelectOption[]
+     */
+    public function getOptions() {
+        return $this->options;
+    }
+    
+    /**
      * Set an option
      * @param string $value
      * @param string $text
@@ -72,19 +83,45 @@ class Select extends Element implements ValidableInterface, IteratorInterface {
             //yield $option;
         }
     }
-    
+
     public function getValue() {
         foreach ($this->options as $option) {
             if ($option->isSelected()) {
                 return $option->getValue();
             }
         }
-        
-        if(count($this->options) > 0) {
+
+        if (count($this->options) > 0) {
             return $this->options->getValue();
         }
-        
+
         return null;
+    }
+
+    /**
+     * Return the renderer
+     * @return Winter\Component\Form\Renderer\Interfaces\RendererInterface
+     */
+    public function getRender() {
+        return $this->rendered;
+    }
+
+    /**
+     * Render the element
+     * @return string
+     */
+    public function render() {
+        return $this->renderer->render($this);
+    }
+
+    /**
+     * Set the renderer
+     * @param \Winter\Component\Form\Renderer\Interfaces\RendererInterface $renderer
+     * @return \Winter\Component\Form\Element\Text
+     */
+    public function setRenderer(RendererInterface $renderer) {
+        $this->renderer = $renderer;
+        return $this;
     }
 
 }

@@ -24,6 +24,13 @@ abstract class AbstractElementRenderer implements RendererInterface {
      */
     protected $suffix;
     
+    /**
+     * The html between label and element
+     * 
+     * @var string
+     */
+    protected $separator;
+    
     
     /**
      * Get a html representation of the element
@@ -68,13 +75,45 @@ abstract class AbstractElementRenderer implements RendererInterface {
         return '';
     }
     
+    /**
+     * Set the prefix html code
+     * 
+     * @param string $html
+     */
     public function setPrefix($html) {
-        
+        $this->prefix = $html;
     }
 
+    /**
+     * Set the suffix html code
+     * 
+     * @param string $html
+     */
+    public function setSuffix($html) {
+        $this->suffix = $html;
+    }
+    
+    /**
+     * Set the html code which separate label and element
+     * 
+     * @param string $html
+     */
+    public function setSeparator($html) {
+        $this->prefix = $html;
+    }
+    
+    
+    /**
+     * Render the element as a string like
+     * prefix+label+separator+element+suffix
+     * 
+     * @param \Winter\Component\Form\Element\Interfaces\ElementInterface $element
+     * @return string
+     */
     public function render(ElementInterface $element) {
         return $this->prefix . 
                $this->getRenderedLabel($element) .
+               $this->separator .
                $this->getRenderedElement($element) .
                $this->suffix;
     }
