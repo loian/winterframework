@@ -8,11 +8,17 @@ use Winter\Component\Form\Renderer\Interfaces\RendererInterface;
 /**
  * Description of TextAreaRenderer
  *
- * @author lorenzo
+ * @author Lorenzo Iannone
  */
 class TextAreaRenderer extends AbstractElementRenderer implements RendererInterface {
-    
-    public function render(ElementInterface $textarea) {
+
+    /**
+     * Get a html representation of the element
+     * 
+     * @param \Winter\Component\Form\Element\Interfaces\ElementInterface $text
+     * @return string
+     */    
+    protected function getRenderedElement(ElementInterface $textarea) {
         $format = '<textarea %s>%s</textarea>';
         $rendered = sprintf($format, $this->buildAttributeString($textarea->getAttributes()),$textarea->getValue());
         return $rendered;

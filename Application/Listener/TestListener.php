@@ -37,7 +37,8 @@ class TestListener extends AbstractHttpListener {
         $t = new \Winter\Component\Form\Element\Checkbox();
         
         $t->setAttribute('name', 'testo')
-                ->setAttribute("id", "34443")->setCheckedValue('OOKK');
+                ->setAttribute("id", "34443")->setCheckedValue('OOKK')
+                ->setLabel('elemento:');
                 
         echo $t->render();
     }  

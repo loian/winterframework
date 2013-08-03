@@ -13,9 +13,25 @@ use Winter\Component\Form\Element\Interfaces\ElementInterface;
 abstract class AbstractElementRenderer implements RendererInterface {
 
     /**
-     * Render the element
+     * The html before the element
+     * @var string
      */
-    abstract public function render(ElementInterface $element);
+    protected $prefix;
+
+    /**
+     * The html after the element
+     * @var string
+     */
+    protected $suffix;
+    
+    
+    /**
+     * Get a html representation of the element
+     * 
+     * @param \Winter\Component\Form\Element\Interfaces\ElementInterface $text
+     * @return string
+     */
+    abstract protected function getRenderedElement(ElementInterface $element);
 
     /**
      * Build a string from attributes in attr="val" format
@@ -30,5 +46,36 @@ abstract class AbstractElementRenderer implements RendererInterface {
         }
         return implode(' ', $tmp);
     }
+    
+    /**
+     * Return an html representation for the element label
+     * 
+     * @param \Winter\Component\Form\Element\Interfaces\ElementInterface $element
+     * @return string
+     */
+    protected function getRenderedLabel(ElementInterface $element) {
+        $format = '<label for="%s">%s</label>';
+        
+        try {
+           $id = $element->getAttribute('id');
+        } catch (Exception $e) {
+            return '';
+        }
+        if($element->getLabel()) {
+            return sprintf ($format, $id, $element->getLabel());
+        }
+        
+        return '';
+    }
+    
+    public function setPrefix($html) {
+        
+    }
 
+    public function render(ElementInterface $element) {
+        return $this->prefix . 
+               $this->getRenderedLabel($element) .
+               $this->getRenderedElement($element) .
+               $this->suffix;
+    }
 }

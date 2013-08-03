@@ -12,7 +12,13 @@ use Winter\Component\Form\Renderer\Interfaces\RendererInterface;
  */
 class CheckboxRenderer extends AbstractElementRenderer implements RendererInterface {
 
-    public function render(ElementInterface $checkbox) {
+    /**
+     * Get a html representation of the element
+     * 
+     * @param \Winter\Component\Form\Element\Interfaces\ElementInterface $text
+     * @return string
+     */
+    protected function getRenderedElement(ElementInterface $checkbox) {
         
         $checkedString = '';
         if($checkbox->getValue()) {
