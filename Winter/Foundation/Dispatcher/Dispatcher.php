@@ -49,7 +49,7 @@ final class Dispatcher {
         $this->loadDispatcherConfig();
         if(!empty($this->componentConfig->listeners)) {
             foreach ($this->componentConfig->listeners as $listener) {
-                $this->register($listener->class, $listener->event);
+                $this->connect($listener->class, $listener->event);
             }
         }
     }
@@ -66,7 +66,7 @@ final class Dispatcher {
         }
 
         /* check if config file exists */
-        $path = $_SERVER["DOCUMENT_ROOT"] . 'Init/Config/' . ucfirst($env) . '/dispatcher.' . Config::getConfigFormat();
+        $path = $_SERVER["DOCUMENT_ROOT"] . '/Config/' . ucfirst($env) . '/dispatcher.' . Config::getConfigFormat();
 
         $configManager = new Config();
         $this->componentConfig = $configManager->loadConfig($path);
@@ -93,7 +93,7 @@ final class Dispatcher {
      * @param \Winter\Foundation\Dispatcher\ListenerInterface $listener
      * @param string $eventClassName
      */
-    public function register($listenerClassName, $eventClassName) {
+    public function connect($listenerClassName, $eventClassName) {
 
         /* initialize the record related to to $eventClassName 
          * if it's not an array */
@@ -104,8 +104,12 @@ final class Dispatcher {
         $this->listeners[$eventClassName][] = $listenerClassName;
     }
 
-    public function unregister($listenerClassName) {
-        foreach ($this->listeners[$eventClassName] as $regEvent => $regListenersList) {
+    /**
+     * Unregister a listener from dispatcher
+     * @param $listenerClassName
+     */
+    public function disconnect($listenerClassName) {
+        foreach ($this->listeners as $regEvent => $regListenersList) {
             foreach ($regListenersList as $listenerKey => $regListener) {
                 if ($regListener == $listenerClassName) {
                     unset($this->listeners[$regEvent][$listenerKey]);

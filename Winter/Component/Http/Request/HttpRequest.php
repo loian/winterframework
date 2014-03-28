@@ -49,7 +49,7 @@ class HttpRequest {
     /**
      * get Get parameters
      * 
-     * @return Winter\Component\Http\Parameter\ParameterContainer
+     * @return  Winter\Component\Http\Parameter\ParameterContainer
      */
     public function getGet() {
         return $this->getParams;
